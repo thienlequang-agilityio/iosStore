@@ -79,8 +79,9 @@
 		168195D21B3943EF009056AC /* StoreInSwift */ = {
 			isa = PBXGroup;
 			children = (
+				168195F91B394FA3009056AC /* ViewControllers */,
+				168195F81B394F8C009056AC /* Models */,
 				168195D51B3943EF009056AC /* AppDelegate.swift */,
-				168195DA1B3943F0009056AC /* SearchViewController.swift */,
 				168195DC1B3943F0009056AC /* Main.storyboard */,
 				168195DF1B3943F0009056AC /* Images.xcassets */,
 				168195E11B3943F0009056AC /* LaunchScreen.xib */,
@@ -113,6 +114,22 @@
 				168195ED1B3943F0009056AC /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		168195F81B394F8C009056AC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		168195F91B394FA3009056AC /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				168195DA1B3943F0009056AC /* SearchViewController.swift */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

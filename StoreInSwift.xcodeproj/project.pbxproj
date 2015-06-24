@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1628E7711B3A98EB001A0243 /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1628E7701B3A98EB001A0243 /* LoadingCell.xib */; };
 		168195D61B3943EF009056AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168195D51B3943EF009056AC /* AppDelegate.swift */; };
 		168195D91B3943F0009056AC /* StoreInSwift.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 168195D71B3943F0009056AC /* StoreInSwift.xcdatamodeld */; };
 		168195DE1B3943F0009056AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 168195DC1B3943F0009056AC /* Main.storyboard */; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1628E7701B3A98EB001A0243 /* LoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
 		168195D01B3943EF009056AC /* StoreInSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreInSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		168195D41B3943EF009056AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		168195D51B3943EF009056AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				168196021B395890009056AC /* SearchResultCell.xib */,
 				168196041B395BC9009056AC /* SearchResultCell.swift */,
 				168196061B395E46009056AC /* NothingFoundCell.xib.xib */,
+				1628E7701B3A98EB001A0243 /* LoadingCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 			files = (
 				168195DE1B3943F0009056AC /* Main.storyboard in Resources */,
 				168195E31B3943F0009056AC /* LaunchScreen.xib in Resources */,
+				1628E7711B3A98EB001A0243 /* LoadingCell.xib in Resources */,
 				168196031B395890009056AC /* SearchResultCell.xib in Resources */,
 				168195E01B3943F0009056AC /* Images.xcassets in Resources */,
 				168196071B395E46009056AC /* NothingFoundCell.xib.xib in Resources */,

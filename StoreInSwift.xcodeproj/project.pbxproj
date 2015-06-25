@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1628E7711B3A98EB001A0243 /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1628E7701B3A98EB001A0243 /* LoadingCell.xib */; };
 		167ABCAC1B3BAFD700FDBA1A /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167ABCAB1B3BAFD700FDBA1A /* UIImageView+DownloadImage.swift */; };
+		167ABCAE1B3BB9BB00FDBA1A /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167ABCAD1B3BB9BB00FDBA1A /* DetailViewController.swift */; };
+		167ABCB01B3BDDF500FDBA1A /* DimmingPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167ABCAF1B3BDDF500FDBA1A /* DimmingPresentationController.swift */; };
+		167ABCB21B3C002F00FDBA1A /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167ABCB11B3C002F00FDBA1A /* GradientView.swift */; };
 		168195D61B3943EF009056AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168195D51B3943EF009056AC /* AppDelegate.swift */; };
 		168195D91B3943F0009056AC /* StoreInSwift.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 168195D71B3943F0009056AC /* StoreInSwift.xcdatamodeld */; };
 		168195DE1B3943F0009056AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 168195DC1B3943F0009056AC /* Main.storyboard */; };
@@ -34,6 +37,9 @@
 /* Begin PBXFileReference section */
 		1628E7701B3A98EB001A0243 /* LoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
 		167ABCAB1B3BAFD700FDBA1A /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
+		167ABCAD1B3BB9BB00FDBA1A /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailViewController.swift; path = ViewControllers/DetailViewController.swift; sourceTree = "<group>"; };
+		167ABCAF1B3BDDF500FDBA1A /* DimmingPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DimmingPresentationController.swift; sourceTree = "<group>"; };
+		167ABCB11B3C002F00FDBA1A /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		168195D01B3943EF009056AC /* StoreInSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreInSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		168195D41B3943EF009056AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		168195D51B3943EF009056AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +78,8 @@
 			isa = PBXGroup;
 			children = (
 				167ABCAB1B3BAFD700FDBA1A /* UIImageView+DownloadImage.swift */,
+				167ABCAF1B3BDDF500FDBA1A /* DimmingPresentationController.swift */,
+				167ABCB11B3C002F00FDBA1A /* GradientView.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -139,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				168195FA1B395072009056AC /* SearchViewController.swift */,
+				167ABCAD1B3BB9BB00FDBA1A /* DetailViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -267,9 +276,12 @@
 				168195FB1B395072009056AC /* SearchViewController.swift in Sources */,
 				168196051B395BC9009056AC /* SearchResultCell.swift in Sources */,
 				167ABCAC1B3BAFD700FDBA1A /* UIImageView+DownloadImage.swift in Sources */,
+				167ABCB01B3BDDF500FDBA1A /* DimmingPresentationController.swift in Sources */,
 				168195D91B3943F0009056AC /* StoreInSwift.xcdatamodeld in Sources */,
 				168196001B39519D009056AC /* SearchResult.swift in Sources */,
 				168195D61B3943EF009056AC /* AppDelegate.swift in Sources */,
+				167ABCAE1B3BB9BB00FDBA1A /* DetailViewController.swift in Sources */,
+				167ABCB21B3C002F00FDBA1A /* GradientView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,14 +19,16 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     var searchResults = [SearchResult]()
     var hasSearched = false
     var isLoading = false
+    var dataTask: NSURLSessionDataTask?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.becomeFirstResponder()
-        tableView.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: 108, left: 0, bottom: 0, right: 0)
         tableView.tableFooterView = UIView()
         
         var cellNib = UINib(nibName: TableViewCellIdentifiers.searchResultCell, bundle: nil)
@@ -43,12 +45,19 @@ class SearchViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    func urlWithSearchText(searchText: String) -> NSURL {
-            let escapedSearchText = searchText.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-            let urlString = String(format: "http://itunes.apple.com/search?term=%@&limit=200", escapedSearchText)
-            let url = NSURL(string: urlString)
+    func urlWithSearchText(searchText: String, category: Int) -> NSURL {
+        var entityName: String
+        switch category {
+            case 1: entityName = "musicTrack"
+            case 2: entityName = "software"
+            case 3: entityName = "ebook"
+        default: entityName = ""
+        }
+        let escapedSearchText = searchText.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+        let urlString = String(format: "http://itunes.apple.com/search?term=%@&limit=200&entity=%@", escapedSearchText, entityName)
+        let url = NSURL(string: urlString)
             
-            return url!
+        return url!
     }
     
     func performStoreRequestWithURL(url: NSURL) -> String? {
@@ -63,16 +72,14 @@ class SearchViewController: UIViewController {
         return nil
     }
     
-    func parseJSON(jsonString: String) -> [String: AnyObject]? {
-        if let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true) {
-            var error: NSError?
-            if let json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: &error) as? [String: AnyObject] {
-                return json
-            } else if let error = error {
-                println("JSON Error: \(error)")
-            } else {
-                println("Unknow JSON Error")
-            }
+    func parseJSON(data: NSData) -> [String: AnyObject]? {
+        var error: NSError?
+        if let json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0), error: &error) as? [String: AnyObject] {
+            return json
+        } else if let error = error {
+            println("JSON Error: \(error)")
+        } else {
+            println("Unknow JSON Error")
         }
         return nil
     }
@@ -203,94 +210,122 @@ class SearchViewController: UIViewController {
         }
         return searchResult
     }
+    
+    @IBAction func segmentChanged(sender: UISegmentedControl) {
+        
+        performSearch()
+    }
+
+
+    func performSearch() {
+        if !searchBar.text.isEmpty {
+            searchBar.resignFirstResponder()
+            dataTask?.cancel()
+            isLoading = true
+            tableView.reloadData()
+            hasSearched = true
+            searchResults = [SearchResult]()
+            ////            let url = urlWithSearchText(searchBar.text)
+            ////
+            ////            println("URL: \(url)")
+            ////            if let jsonString = performStoreRequestWithURL(url) {
+            ////
+            ////                if let dictionary = parseJSON(jsonString) {
+            ////
+            ////                    searchResults = parseDictionary(dictionary)
+            ////
+            //////                    searchResults.sort{ $0.name.localizedStandardCompare($1.name) == NSComparisonResult.OrderedAscending }
+            //////                    searchResults.sort({result1, result2 in
+            //////                                            return result1.name.localizedStandardCompare(result2.name) ==
+            //////                                                NSComparisonResult.OrderedAscending
+            //////                                        })
+            //////                    searchResults.sort{ $0 < $1 }
+            ////                    searchResults.sort(<)
+            ////                    isLoading = false
+            ////                    tableView.reloadData()
+            ////                    return
+            ////                }
+            ////
+            ////            }
+            ////            showNetworkError()
+            //
+            ////            ******************ASYNCHRONOUS******************
+            //            // 1
+            //            let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+            //
+            //            // 2
+            //
+            //            dispatch_async(queue, { () -> Void in
+            //                let url = self.urlWithSearchText(searchBar.text)
+            //                if let jsonString = self.performStoreRequestWithURL(url) {
+            //                    if let dictionary = self.parseJSON(jsonString) {
+            //                        self.searchResults = self.parseDictionary(dictionary)
+            //                        self.searchResults.sort(<)
+            //
+            //                        // 3
+            //                        println("DONE!")
+            //                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            //                            self.isLoading = false
+            //                            self.tableView.reloadData()
+            //                        })
+            //
+            //                        return
+            //                    }
+            //                }
+            //                println("ERROR")
+            //                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            //                        self.showNetworkError()
+            //                })
+            //
+            //            })
+            
+            ////////NSURLSession
+            // 1
+            let url = self.urlWithSearchText(searchBar.text, category: segmentedControl.selectedSegmentIndex)
+            // 2
+            let session = NSURLSession.sharedSession()
+            // 3
+            dataTask = session.dataTaskWithURL(url, completionHandler: { (data, response, error) -> Void in
+                //4
+                if let error = error {
+                    println("Failure! \(error)")
+                    if error.code == -999 {return}
+                } else if let httpResponse = response as? NSHTTPURLResponse {
+                    if httpResponse.statusCode == 200 {
+                        if let dictionary = self.parseJSON(data) {
+                            self.searchResults = self.parseDictionary(dictionary)
+                            self.searchResults.sort(<)
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                self.isLoading = false
+                                self.tableView.reloadData()
+                            })
+                        }
+                    } else {
+                        println("Failure! \(response)")
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.hasSearched = false
+                            self.isLoading = false
+                            self.tableView.reloadData()
+                            self.showNetworkError()
+                        })
+                    }
+                }
+            })
+            
+            dataTask?.resume()
+            
+        }
+    }
+
 
 }
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
     
-        if !searchBar.text.isEmpty {
-            searchBar.resignFirstResponder()
-            isLoading = true
-            tableView.reloadData()
-            hasSearched = true
-            searchResults = [SearchResult]()
-////            let url = urlWithSearchText(searchBar.text)
-////
-////            println("URL: \(url)")
-////            if let jsonString = performStoreRequestWithURL(url) {
-////                
-////                if let dictionary = parseJSON(jsonString) {
-////
-////                    searchResults = parseDictionary(dictionary)
-////
-//////                    searchResults.sort{ $0.name.localizedStandardCompare($1.name) == NSComparisonResult.OrderedAscending }
-//////                    searchResults.sort({result1, result2 in
-//////                                            return result1.name.localizedStandardCompare(result2.name) ==
-//////                                                NSComparisonResult.OrderedAscending
-//////                                        })
-//////                    searchResults.sort{ $0 < $1 }
-////                    searchResults.sort(<)
-////                    isLoading = false
-////                    tableView.reloadData()
-////                    return
-////                }
-////                
-////            }
-////            showNetworkError()
-//            
-////            ******************ASYNCHRONOUS******************
-//            // 1
-//            let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
-//            
-//            // 2
-//            
-//            dispatch_async(queue, { () -> Void in
-//                let url = self.urlWithSearchText(searchBar.text)
-//                if let jsonString = self.performStoreRequestWithURL(url) {
-//                    if let dictionary = self.parseJSON(jsonString) {
-//                        self.searchResults = self.parseDictionary(dictionary)
-//                        self.searchResults.sort(<)
-//                    
-//                        // 3
-//                        println("DONE!")
-//                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                            self.isLoading = false
-//                            self.tableView.reloadData()
-//                        })
-//
-//                        return
-//                    }
-//                }
-//                println("ERROR")
-//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                        self.showNetworkError()
-//                })
-//
-//            })
-            
-            ////////NSURLSession
-            // 1
-            let url = self.urlWithSearchText(searchBar.text)
-            // 2
-            let session = NSURLSession.sharedSession()
-            // 3
-            let dataTask = session.dataTaskWithURL(url, completionHandler: { (data, response, error) -> Void in
-                //4
-                if let error = error {
-                    println("Failure! \(error)")
-                } else {
-                    println("Success! \(response)")
-                }
-                })
-            
-            dataTask.resume()
-            
-        }
+        performSearch()
 
     }
-            
-            
 }
 
 extension SearchViewController: UITableViewDataSource {
